@@ -1,6 +1,7 @@
+import pyglet
 from pyglet.window import key
 
-from configs import *
+from configs import FIELD_SIZE, PLAYERS, window, Side
 from game import Game
 
 game = Game(FIELD_SIZE, PLAYERS)
