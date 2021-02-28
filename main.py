@@ -1,7 +1,7 @@
 import pyglet
 from pyglet.window import key
 
-from configs import FIELD_SIZE, PLAYERS, window, Side
+from configs import FIELD_SIZE, PLAYERS, window, Side, BORDER_SIZE
 from game import Game
 
 game = Game(FIELD_SIZE, PLAYERS)
@@ -37,7 +37,7 @@ def on_key_press(symbol, modifiers):
 def on_draw():
     window.clear()
     pyglet.shapes.BorderedRectangle(0, 0, window.width, window.height,
-                                    color=(0, 0, 0), border=BORDER_SIZE).draw()
+                                    color = (0, 0, 0), border = BORDER_SIZE).draw()
     game.paint()
 
 
