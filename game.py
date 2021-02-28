@@ -91,8 +91,7 @@ class Game:
         self.__apple = Apple(*field_size, snakes)
         self.in_loop = True
 
-    def paint(self, win):
-        win.clear()
+    def paint(self):
         if self.__players_alive != 0:
             blue_snake = self.__players[0]
             red_snake = self.__players[1]

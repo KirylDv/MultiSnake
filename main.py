@@ -34,7 +34,10 @@ def on_key_press(symbol, modifiers):
 
 @window.event
 def on_draw():
-    game.paint(window)
+    window.clear()
+    pyglet.shapes.BorderedRectangle(0, 0, window.width, window.height,
+                                    color=(0, 0, 0), border=3).draw()
+    game.paint()
 
 
 def main():
