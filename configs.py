@@ -1,7 +1,6 @@
 from enum import Enum
 from PIL import Image
 import pyglet
-
 from helpers import replaceColor, rotate,\
                     getPygletImgFromPILImage,\
                     getAllHeadPicsFromHeadN
@@ -39,7 +38,8 @@ PLAYERS = 2
 BLOCK_SIZE = (10, 10)
 k = 1
 FIELD_SIZE = (int(48 * k), int(27 * k))
-DEBUG = True
+BORDER_SIZE = 1
+DEBUG = False
 
 if DEBUG:
     window = pyglet.window.Window()
@@ -55,7 +55,7 @@ class Side(Enum):
 
 
 def screen_config():
-    global SCALE_X, SCALE_Y, window, BLOCK_SIZE
+    global SCALE_X, SCALE_Y, window, BLOCK_SIZE, BORDER_SIZE
     if not DEBUG:
         window.set_exclusive_mouse()
     window.activate()
@@ -65,6 +65,7 @@ def screen_config():
     SCALE_X = window.width / ((FIELD_SIZE[0] + 1) * BLOCK_SIZE[0])
     SCALE_Y = window.height / ((FIELD_SIZE[1] + 1) * BLOCK_SIZE[1])
     BLOCK_SIZE = BLOCK_SIZE[0] * SCALE_X, BLOCK_SIZE[1] * SCALE_Y
+    BORDER_SIZE = min(BLOCK_SIZE) // 2
 
 
 screen_config()
