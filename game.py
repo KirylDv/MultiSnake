@@ -89,9 +89,9 @@ class Game:
 
     def paint(self):
         if self.__players_alive != 0:
-            blue_snake = self.__players[0]
+            yellow_snake = self.__players[0]
             red_snake = self.__players[1]
-            blue_snake.draw_snake(blue_body_pic, blue_head_pics)
+            yellow_snake.draw_snake(yellow_body_pic, yellow_head_pics)
             red_snake.draw_snake(red_body_pic, red_head_pics)
             apple = pyglet.sprite.Sprite(apple_pic,
                                          x=self.__apple.get_coord()[0] * BLOCK_SIZE[0],

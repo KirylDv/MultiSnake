@@ -15,6 +15,11 @@ red_head_pics = Pics(w=pyglet.image.load("img/red_head_w.png"),
                      n=pyglet.image.load("img/red_head_n.png"),
                      e=pyglet.image.load("img/red_head_e.png"),
                      s=pyglet.image.load("img/red_head_s.png"))
+yellow_body_pic = pyglet.image.load("img/yellow_body.png")
+yellow_head_pics = Pics(w=pyglet.image.load("img/yellow_head_w.png"),
+                        n=pyglet.image.load("img/yellow_head_n.png"),
+                        e=pyglet.image.load("img/yellow_head_e.png"),
+                        s=pyglet.image.load("img/yellow_head_s.png"))
 apple_pic = pyglet.image.load("img/apple.png")
 
 SCALE_X = 1
