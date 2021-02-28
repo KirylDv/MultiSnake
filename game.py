@@ -43,12 +43,12 @@ class Game:
 
     def __check_collisions(self):
         # variables
-        blue_snake = self.__players[0]
-        red_snake = self.__players[1]
         walls = set()
         snakes = set()
+        heads = []
         for snake in self.__players:
             walls |= snake.get_body()
+            heads.append(snake.get_head())
             snakes |= {snake.get_head()}
         snakes |= walls
         need_apple = False
@@ -59,16 +59,12 @@ class Game:
                 need_apple = True
         if need_apple:
             self.__apple.gen_apple(snakes)
-        # die. problem with heads. in future i can do smth with that
-        if blue_snake.get_head() == red_snake.get_head():
-            red_snake.die()
-            blue_snake.die()
-            self.__players_alive -= 2
-            return
+        # die. no more problems with heads. it wasn't so bad as i think
         for snake in self.__players:
             if snake.is_alive():
                 if (snake.get_head() in walls) or \
-                        self.__field.not_on_field(snake.get_head()):
+                        self.__field.not_on_field(snake.get_head()) or \
+                        heads.count(snake.get_head()) > 1:
                     snake.die()
                     self.__players_alive -= 1
 
