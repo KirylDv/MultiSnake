@@ -1,9 +1,11 @@
 from collections import namedtuple
-from PIL import Image
+
 import numpy as np
 import pyglet
+from PIL import Image
 
-def replaceColor (image, rgbs, newRgbs):
+
+def replace_color(image, rgbs, new_rgbs):
     im = image.convert('RGBA')
 
     data = np.array(im)   # "data" is a height x width x 4 numpy array
@@ -13,26 +15,29 @@ def replaceColor (image, rgbs, newRgbs):
     for i in range(len(rgbs)):
 
         color_areas = (red == rgbs[i][0]) & (green == rgbs[i][1]) & (blue == rgbs[i][2])
-        data[..., :-1][color_areas.T] = newRgbs[i]
+        data[..., :-1][color_areas.T] = new_rgbs[i]
 
     im2 = Image.fromarray(data)
 
     return im2
 
+
 def rotate(image, action):
     return image.transpose(action)
 
-def getPygletImgFromPILImage(img):
+
+def get_pyglet_img_from_pil_image(img):
     return pyglet.image.ImageData(img.width, img.height, 'RGBA', img.tobytes(), pitch = -img.width * 4)
 
-def getAllHeadPicsFromHeadN(headN):
+
+def get_all_head_pics_from_head_n(head_n):
     Pics = namedtuple('Pic', ['n', 'w', 's', 'e'])
 
-    headW = rotate(headN, Image.ROTATE_90)
-    headS = rotate(headN, Image.FLIP_TOP_BOTTOM)
-    headE = rotate(headW, Image.FLIP_LEFT_RIGHT)
+    head_w = rotate(head_n, Image.ROTATE_90)
+    head_s = rotate(head_n, Image.FLIP_TOP_BOTTOM)
+    head_e = rotate(head_w, Image.FLIP_LEFT_RIGHT)
 
-    return Pics(n = getPygletImgFromPILImage(headN),
-                w = getPygletImgFromPILImage(headW),
-                s = getPygletImgFromPILImage(headS),
-                e = getPygletImgFromPILImage(headE))
+    return Pics(n=get_pyglet_img_from_pil_image(head_n),
+                w=get_pyglet_img_from_pil_image(head_w),
+                s=get_pyglet_img_from_pil_image(head_s),
+                e=get_pyglet_img_from_pil_image(head_e))
