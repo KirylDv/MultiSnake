@@ -14,21 +14,21 @@ def on_key_press(symbol, modifiers):
     elif symbol == key.PAUSE:
         game.finish()
     elif symbol == key.W:
-        game.key_pressed((1, Side.north))
+        game.key_pressed(1, Side.north)
     elif symbol == key.UP:
-        game.key_pressed((0, Side.north))
+        game.key_pressed(0, Side.north)
     elif symbol == key.A:
-        game.key_pressed((1, Side.west))
+        game.key_pressed(1, Side.west)
     elif symbol == key.LEFT:
-        game.key_pressed((0, Side.west))
+        game.key_pressed(0, Side.west)
     elif symbol == key.S:
-        game.key_pressed((1, Side.south))
+        game.key_pressed(1, Side.south)
     elif symbol == key.DOWN:
-        game.key_pressed((0, Side.south))
+        game.key_pressed(0, Side.south)
     elif symbol == key.D:
-        game.key_pressed((1, Side.east))
+        game.key_pressed(1, Side.east)
     elif symbol == key.RIGHT:
-        game.key_pressed((0, Side.east))
+        game.key_pressed(0, Side.east)
     elif symbol == key.ESCAPE:
         pyglet.app.exit()
 

@@ -26,10 +26,11 @@ class Game:
         super(Game, self).__init__()
         self.__field = Field(*field_size)
         self.__players = [Player(*field_size, i + 1, *config.get_body_parts(i),
-                                 config.POSSIBLE_PLAYERS + 1) for i in range(config.POSSIBLE_PLAYERS)]
-        self.__players_alive = players
+                                 config.SPAWNED_SNAKES + 1) for i in range(config.SPAWNED_SNAKES)]
+        self.__players_alive = config.SPAWNED_SNAKES
         for player in self.__players[players:]:
-            player.die()
+            player.bot = True
+            player.change_color(*config.get_body_parts(2))
         snakes = set()
         for snake in self.__players:
             snakes |= snake.get_body()
@@ -71,8 +72,9 @@ class Game:
                     snake.die()
                     self.__players_alive -= 1
 
-    def key_pressed(self, key):
-        self.__players[key[0]].change_direction(key[1])
+    def key_pressed(self, player, key):
+        if not self.__players[player].bot:
+            self.__players[player].change_direction(key)
 
     def finish(self):
         self.__players_alive = 0
@@ -80,10 +82,11 @@ class Game:
     def reset(self, field_size=(80, 24), players=1):
         self.__field = Field(*field_size)
         self.__players = [Player(*field_size, i + 1, *config.get_body_parts(i),
-                                 config.POSSIBLE_PLAYERS + 1) for i in range(config.POSSIBLE_PLAYERS)]
-        self.__players_alive = players
+                                 config.SPAWNED_SNAKES + 1) for i in range(config.SPAWNED_SNAKES)]
+        self.__players_alive = config.SPAWNED_SNAKES
         for player in self.__players[players:]:
-            player.die()
+            player.bot = True
+            player.change_color(*config.get_body_parts(2))
         snakes = set()
         for snake in self.__players:
             snakes |= snake.get_body()
@@ -107,7 +110,7 @@ class Game:
     def __end_screen(self):
         winners = []
         score = []
-        for i in range(config.POSSIBLE_PLAYERS):
+        for i in range(config.SPAWNED_SNAKES):
             score.append((self.__players[i].get_score(),
                           self.__players[i].life, i + 1))
         score = sorted(score, key=cmp_to_key(comp), reverse=True)

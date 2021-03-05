@@ -18,6 +18,7 @@ class Player:
         self.__head = (int(x_size / 2 + 1), int(y_size * team / parts))
         self.__last = self.__body[0]
         self.__score = len(self.__body)
+        self.bot = False
         self.life = 0
 
     def move(self):
@@ -56,6 +57,10 @@ class Player:
             self.__direction = direction
         elif (self.__direction == Side.south) and (direction != Side.north):
             self.__direction = direction
+
+    def change_color(self, body_sprite, head_sprites):
+        self.body_sprite = body_sprite
+        self.head_sprites = head_sprites
 
     def die(self):
         self.__alive = False
