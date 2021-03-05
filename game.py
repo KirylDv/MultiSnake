@@ -1,9 +1,10 @@
 from functools import cmp_to_key
+import pyglet
 
 from apple import Apple
-from configs import *
 from field import Field
 from player import Player
+import configs as config
 
 
 def comp(x, y):
@@ -23,7 +24,7 @@ class Game:
     def __init__(self, field_size=(80, 24), players=1):
         super(Game, self).__init__()
         self.__field = Field(*field_size)
-        self.__players = [Player(*field_size, i + 1, POSSIBLE_PLAYERS + 1) for i in range(POSSIBLE_PLAYERS)]
+        self.__players = [Player(*field_size, i + 1, *config.paintedBodyParts[i], config.POSSIBLE_PLAYERS + 1) for i in range(config.POSSIBLE_PLAYERS)]
         self.__players_alive = players
         for player in self.__players[players:]:
             player.die()
@@ -76,7 +77,7 @@ class Game:
 
     def reset(self, field_size=(80, 24), players=1):
         self.__field = Field(*field_size)
-        self.__players = [Player(*field_size, i + 1, POSSIBLE_PLAYERS + 1) for i in range(POSSIBLE_PLAYERS)]
+        self.__players = [Player(*field_size, i + 1, *config.paintedBodyParts[i], config.POSSIBLE_PLAYERS + 1) for i in range(config.POSSIBLE_PLAYERS)]
         self.__players_alive = players
         for player in self.__players[players:]:
             player.die()
@@ -89,14 +90,13 @@ class Game:
 
     def paint(self):
         if self.__players_alive != 0:
-            yellow_snake = self.__players[0]
-            red_snake = self.__players[1]
-            yellow_snake.draw_snake(yellow_body_pic, yellow_head_pics)
-            red_snake.draw_snake(red_body_pic, red_head_pics)
-            apple = pyglet.sprite.Sprite(apple_pic,
-                                         x=self.__apple.get_coord()[0] * BLOCK_SIZE[0],
-                                         y=self.__apple.get_coord()[1] * BLOCK_SIZE[1])
-            apple.update(scale_x=SCALE_X, scale_y=SCALE_Y)
+            for snake in self.__players:
+                snake.draw_snake()
+            
+            apple = pyglet.sprite.Sprite(config.apple_pic,
+                                         x = self.__apple.get_coord()[0] * config.BLOCK_SIZE[0],
+                                         y = self.__apple.get_coord()[1] * config.BLOCK_SIZE[1])
+            apple.update(scale_x = config.SCALE_X, scale_y = config.SCALE_Y)
             apple.draw()
         else:
             self.__end_screen()
@@ -104,10 +104,10 @@ class Game:
     def __end_screen(self):
         winners = []
         score = []
-        for i in range(POSSIBLE_PLAYERS):
+        for i in range(config.POSSIBLE_PLAYERS):
             score.append((self.__players[i].get_score(),
                           self.__players[i].life, i + 1))
-        score = sorted(score, key=cmp_to_key(comp), reverse=True)
+        score = sorted(score, key = cmp_to_key(comp), reverse = True)
         for pl in score:
             if (pl[0] == score[0][0]) and (pl[1] == score[0][1]):
                 winners.append(str(pl[2]))
@@ -121,17 +121,17 @@ class Game:
         else:
             text = 'Player ' + text + ' win'
         label1 = pyglet.text.Label(text,
-                                   font_name='Times New Roman',
-                                   font_size=72,
-                                   x=300, y=600)
+                                   font_name = 'Times New Roman',
+                                   font_size = 72,
+                                   x = 300, y = 600)
         label1.draw()
         label2 = pyglet.text.Label(f'Score: {score[0][0]}',
                                    font_name='Times New Roman',
                                    font_size=72,
-                                   x=300, y=400)
+                                   x = 300, y = 400)
         label2.draw()
         label3 = pyglet.text.Label(':'.join([str(sc) for sc in self.o_b_o]),
-                                   font_name='Times New Roman',
-                                   font_size=72,
-                                   x=300, y=200)
+                                   font_name = 'Times New Roman',
+                                   font_size = 72,
+                                   x = 300, y = 200)
         label3.draw()
