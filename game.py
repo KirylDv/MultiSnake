@@ -30,6 +30,7 @@ class Game:
         self.__players_alive = config.SPAWNED_SNAKES
         for player in self.__players[players:]:
             player.bot = True
+            player.init_bot()
             player.change_color(*config.get_body_parts(2))
         snakes = set()
         for snake in self.__players:
@@ -42,6 +43,7 @@ class Game:
     def run(self, dt=0.5):
         if self.__players_alive != 0:
             for snake in self.__players:
+                snake.bot_way(self.__apple.get_coord())
                 snake.move()
             self.__check_collisions()
 
@@ -76,8 +78,10 @@ class Game:
         if not self.__players[player].bot:
             self.__players[player].change_direction(key)
 
-    def finish(self):
-        self.__players_alive = 0
+    def __finish(self):
+        self.reset(config.FIELD_SIZE, config.PLAYERS)
+        if sum(self.o_b_o) >= 100:
+            pyglet.app.exit()
 
     def reset(self, field_size=(80, 24), players=1):
         self.__field = Field(*field_size)
@@ -86,6 +90,7 @@ class Game:
         self.__players_alive = config.SPAWNED_SNAKES
         for player in self.__players[players:]:
             player.bot = True
+            player.init_bot()
             player.change_color(*config.get_body_parts(2))
         snakes = set()
         for snake in self.__players:

@@ -1,7 +1,7 @@
 import pyglet
 from pyglet.window import key
 
-from configs import FIELD_SIZE, PLAYERS, window, Side, BORDER_SIZE
+from configs import FIELD_SIZE, PLAYERS, window, Side, BORDER_SIZE, FPS
 from game import Game
 
 game = Game(FIELD_SIZE, PLAYERS)
@@ -11,8 +11,6 @@ game = Game(FIELD_SIZE, PLAYERS)
 def on_key_press(symbol, modifiers):
     if symbol == key.F5:
         game.reset(FIELD_SIZE, PLAYERS)
-    elif symbol == key.PAUSE:
-        game.finish()
     elif symbol == key.W:
         game.key_pressed(1, Side.north)
     elif symbol == key.UP:
@@ -42,8 +40,7 @@ def on_draw():
 
 
 def main():
-    fps = 10
-    pyglet.clock.schedule_interval(game.run, 1 / fps)
+    pyglet.clock.schedule_interval(game.run, 1 / FPS)
     pyglet.app.run()
 
 

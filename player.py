@@ -2,6 +2,7 @@ from collections import deque
 
 from pyglet.sprite import Sprite
 
+import bot_player
 from configs import Side, SCALE_X, SCALE_Y, BLOCK_SIZE
 
 
@@ -20,6 +21,7 @@ class Player:
         self.__score = len(self.__body)
         self.bot = False
         self.life = 0
+        self.__bot_player = None
 
     def move(self):
         if self.__alive:
@@ -88,3 +90,12 @@ class Player:
                               y=self.__head[1] * BLOCK_SIZE[1])
             head_pic.update(scale_x=SCALE_X, scale_y=SCALE_Y)
             head_pic.draw()
+
+    def init_bot(self, field=None):
+        self.__bot_player = bot_player.PointToAppleBot()
+        # self.__bot_player = bot_player.RandomBot()
+
+    def bot_way(self, apple=None, map=None):
+        if self.bot and self.__alive:
+            temp = self.__bot_player.get_move(apple, self.__head)
+            self.change_direction(temp)
