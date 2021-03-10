@@ -62,6 +62,9 @@ class Game:
             if snake.get_head() == self.__apple.get_coord():
                 snake.eat()
                 need_apple = True
+                snakes |= {snake.get_tail()}
+                walls |= {snake.get_tail()}
+                break
         if need_apple:
             self.__apple.gen_apple(snakes)
         # die. no more problems with heads. it wasn't so bad as i think

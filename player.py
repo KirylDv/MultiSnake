@@ -44,6 +44,9 @@ class Player:
     def get_head(self):
         return self.__head
 
+    def get_tail(self):
+        return self.__last
+
     def get_direction(self):
         return self.__direction
 
