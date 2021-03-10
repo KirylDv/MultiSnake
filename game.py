@@ -125,7 +125,6 @@ class Game:
                 if self.in_loop:
                     self.o_b_o[pl[2] - 1] += 1
         self.in_loop = False
-        # self.__finish()
 
         text = ', '.join(winners)
         if len(winners) != 1:

@@ -22,10 +22,6 @@ class RandomBot:
 
 class PointToAppleBot:
     def __init__(self, field=None):
-        self.head_x = None
-        self.head_y = None
-        self.apple_x = None
-        self.apple_y = None
         self.__direction = Side.east
 
     def get_move(self, apple, head, maze=None):
@@ -39,6 +35,50 @@ class PointToAppleBot:
         if (apple[0] < head[0]) and (self.__direction != Side.east):
             temp.append(Side.west)
         self.__direction = choice(temp)
+        return self.__direction
+
+
+class UpgradedPointToAppleBot:
+    def __init__(self, field):
+        self.field = field
+        self.__direction = Side.east
+
+    def get_move(self, apple, head, maze):
+        temp = []
+        directions = [(head[0] + 1, head[1] + 0),  # east
+                      (head[0] - 1, head[1] + 0),  # west
+                      (head[0] + 0, head[1] + 1),  # north
+                      (head[0] + 0, head[1] - 1)]  # south
+        if (apple[1] > head[1]) and (self.__direction != Side.south):
+            if (directions[2] not in maze) and self.field.on_field(directions[2]):
+                temp.append(Side.north)
+
+        if (apple[0] > head[0]) and (self.__direction != Side.west):
+            if (directions[0] not in maze) and self.field.on_field(directions[0]):
+                temp.append(Side.east)
+
+        if (apple[1] < head[1]) and (self.__direction != Side.north):
+            if (directions[3] not in maze) and self.field.on_field(directions[3]):
+                temp.append(Side.south)
+
+        if (apple[0] < head[0]) and (self.__direction != Side.east):
+            if (directions[1] not in maze) and self.field.on_field(directions[1]):
+                temp.append(Side.west)
+
+        if len(temp) != 0:
+            self.__direction = choice(temp)
+        else:
+            directs = [Side.east, Side.west, Side.north, Side.south]
+            neighbours = []
+            for i in range(4):
+                node = directions[i]
+                if (node not in maze) and self.field.on_field(node):
+                    neighbours.append(directs[i])
+            if len(neighbours) != 0:
+                self.__direction = choice(neighbours)
+            else:
+                self.__direction = choice(directs)
+
         return self.__direction
 
 

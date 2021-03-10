@@ -40,8 +40,8 @@ BLOCK_SIZE = (10, 10)
 k = 1
 FIELD_SIZE = (int(48 * k), int(27 * k))
 BORDER_SIZE = 1
-FPS = 1000000
-DEBUG = True
+FPS = 10
+DEBUG = False
 
 if DEBUG:
     window = pyglet.window.Window()
