@@ -1,3 +1,4 @@
+import heapq
 from collections import namedtuple
 
 import numpy as np
@@ -41,3 +42,17 @@ def get_all_head_pics_from_head_n(head_n):
                 w=get_pyglet_img_from_pil_image(head_w),
                 s=get_pyglet_img_from_pil_image(head_s),
                 e=get_pyglet_img_from_pil_image(head_e))
+
+
+class PriorityQueue:
+    def __init__(self):
+        self.elements = []
+
+    def empty(self):
+        return len(self.elements) == 0
+
+    def push(self, key, item):
+        heapq.heappush(self.elements, (key, item))
+
+    def pop(self):
+        return heapq.heappop(self.elements)

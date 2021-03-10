@@ -34,6 +34,9 @@ class Player:
     def eat(self):
         self.__body.appendleft(self.__last)
         self.__score += 1
+        # with open('report5.txt', 'a') as f:
+        #    f.write(str(self.life) + ' ')
+        # self.life = 0
 
     def get_score(self):
         return self.__score
@@ -92,10 +95,11 @@ class Player:
             head_pic.draw()
 
     def init_bot(self, field=None):
-        self.__bot_player = bot_player.PointToAppleBot()
+        self.__bot_player = bot_player.AStarBot(field)
+        # self.__bot_player = bot_player.PointToAppleBot()
         # self.__bot_player = bot_player.RandomBot()
 
     def bot_way(self, apple=None, map=None):
         if self.bot and self.__alive:
-            temp = self.__bot_player.get_move(apple, self.__head)
+            temp = self.__bot_player.get_move(apple, self.__head, map)
             self.change_direction(temp)

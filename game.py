@@ -24,28 +24,27 @@ def comp(x, y):
 class Game:
     def __init__(self, field_size=(80, 24), players=1):
         super(Game, self).__init__()
-        self.__field = Field(*field_size)
-        self.__players = [Player(*field_size, i + 1, *config.get_body_parts(i),
-                                 config.SPAWNED_SNAKES + 1) for i in range(config.SPAWNED_SNAKES)]
-        self.__players_alive = config.SPAWNED_SNAKES
-        for player in self.__players[players:]:
-            player.bot = True
-            player.init_bot()
-            player.change_color(*config.get_body_parts(2))
-        snakes = set()
-        for snake in self.__players:
-            snakes |= snake.get_body()
-            snakes.update({snake.get_head()})
-        self.__apple = Apple(*field_size, snakes)
-        self.o_b_o = [0 for i in self.__players]
+        self.__field = None
+        self.__players = None
+        self.__players_alive = None
+        self.__apple = None
         self.in_loop = True
+        self.reset(field_size, players)
+        self.o_b_o = [0 for i in range(config.SPAWNED_SNAKES)]
 
     def run(self, dt=0.5):
         if self.__players_alive != 0:
             for snake in self.__players:
-                snake.bot_way(self.__apple.get_coord())
+                snake.bot_way(self.__apple.get_coord(), self.__get_walls())
                 snake.move()
             self.__check_collisions()
+
+    def __get_walls(self):
+        walls = set()
+        for snake in self.__players:
+            walls |= snake.get_body()
+            walls |= {snake.get_head()}
+        return walls
 
     def __check_collisions(self):
         # variables
@@ -80,7 +79,8 @@ class Game:
 
     def __finish(self):
         self.reset(config.FIELD_SIZE, config.PLAYERS)
-        if sum(self.o_b_o) >= 100:
+        print(sum(self.o_b_o))
+        if sum(self.o_b_o) >= 10:
             pyglet.app.exit()
 
     def reset(self, field_size=(80, 24), players=1):
@@ -90,7 +90,7 @@ class Game:
         self.__players_alive = config.SPAWNED_SNAKES
         for player in self.__players[players:]:
             player.bot = True
-            player.init_bot()
+            player.init_bot(self.__field)
             player.change_color(*config.get_body_parts(2))
         snakes = set()
         for snake in self.__players:
@@ -125,6 +125,7 @@ class Game:
                 if self.in_loop:
                     self.o_b_o[pl[2] - 1] += 1
         self.in_loop = False
+        # self.__finish()
 
         text = ', '.join(winners)
         if len(winners) != 1:

@@ -34,14 +34,14 @@ painted_body_parts = [(yellow_body_pic, yellow_head_pics),
 
 SCALE_X = 1
 SCALE_Y = 1
-SPAWNED_SNAKES = 2
-PLAYERS = 1
+SPAWNED_SNAKES = 1
+PLAYERS = 0
 BLOCK_SIZE = (10, 10)
 k = 1
 FIELD_SIZE = (int(48 * k), int(27 * k))
 BORDER_SIZE = 1
-FPS = 10
-DEBUG = False
+FPS = 1000000
+DEBUG = True
 
 if DEBUG:
     window = pyglet.window.Window()

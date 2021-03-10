@@ -12,6 +12,9 @@ class Field:
             flag = True
         return flag
 
+    def on_field(self, point):
+        return not self.not_on_field(point)
+
     def get_x(self):
         return self.__x_size
 
