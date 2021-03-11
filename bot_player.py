@@ -3,6 +3,8 @@ from random import randint, choice, shuffle, random
 from configs import Side
 from helpers import PriorityQueue
 
+RANDOM_CHANCE = 0.05
+
 
 class RandomBot:
     def __init__(self, field=None):
@@ -91,7 +93,7 @@ class AStarBot:
     def get_move(self, apple, head, maze):
         self.apple = apple
         self.head = head
-        if random() < 0.1:
+        if random() < RANDOM_CHANCE:
             direction = self.__panic_mode(maze)
         else:
             direction = self.a_star(maze)

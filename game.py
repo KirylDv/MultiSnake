@@ -29,6 +29,7 @@ class Game:
         self.__players_alive = None
         self.__apple = None
         self.in_loop = True
+        self.max_score = 0
         self.reset(field_size, players)
         self.o_b_o = [0 for i in range(config.SPAWNED_SNAKES)]
 
@@ -64,6 +65,10 @@ class Game:
                 need_apple = True
                 snakes |= {snake.get_tail()}
                 walls |= {snake.get_tail()}
+                if (self.__players_alive == 1) and snake.bot:
+                    if (snake.get_score() > self.max_score) and (config.SPAWNED_SNAKES != 1):
+                        snake.die()
+                        self.__players_alive -= 1
                 break
         if need_apple:
             self.__apple.gen_apple(snakes)
@@ -75,6 +80,7 @@ class Game:
                         heads.count(snake.get_head()) > 1:
                     snake.die()
                     self.__players_alive -= 1
+                    self.max_score = max(snake.get_score(), self.max_score)
 
     def key_pressed(self, player, key):
         if not self.__players[player].bot:
@@ -101,6 +107,7 @@ class Game:
             snakes.update({snake.get_head()})
         self.__apple = Apple(*field_size, snakes)
         self.in_loop = True
+        self.max_score = 0
 
     def paint(self):
         if self.__players_alive != 0:
