@@ -1,4 +1,4 @@
-from random import randint, choice
+from random import randint, choice, shuffle, random
 
 from configs import Side
 from helpers import PriorityQueue
@@ -91,11 +91,31 @@ class AStarBot:
     def get_move(self, apple, head, maze):
         self.apple = apple
         self.head = head
-        direction = self.a_star(maze)
+        if random() < 0.1:
+            direction = self.__panic_mode(maze)
+        else:
+            direction = self.a_star(maze)
         return direction
 
     def __calc_h(self, coord):
         return abs(self.apple[0] - coord[0]) + abs(self.apple[1] - coord[1])
+
+    def __panic_mode(self, maze):
+        directions = [Side.east, Side.west, Side.north, Side.south]
+        neighbours = []
+        temp = [(self.head[0] + 1, self.head[1] + 0),  # east
+                (self.head[0] - 1, self.head[1] + 0),  # west
+                (self.head[0] + 0, self.head[1] + 1),  # north
+                (self.head[0] + 0, self.head[1] - 1)]  # south
+        for i in range(4):
+            node = temp[i]
+            if (node not in maze) and self.field.on_field(node):
+                neighbours.append(directions[i])
+        if len(neighbours) != 0:
+            direction = choice(neighbours)
+        else:
+            direction = choice(directions)
+        return direction
 
     def a_star(self, maze):
         open_nodes = PriorityQueue()
@@ -116,6 +136,7 @@ class AStarBot:
                     (current[1][0] - 1, current[1][1] + 0),  # west
                     (current[1][0] + 0, current[1][1] + 1),  # north
                     (current[1][0] + 0, current[1][1] - 1)]  # south
+            shuffle(temp)
             for node in temp:
                 if (node not in maze) and self.field.on_field(node):
                     neighbours.append(node)
@@ -133,21 +154,7 @@ class AStarBot:
             while came_from[node] != self.head:
                 node = came_from[node]
         except KeyError:
-            directions = [Side.east, Side.west, Side.north, Side.south]
-            neighbours = []
-            temp = [(self.head[0] + 1, self.head[1] + 0),  # east
-                    (self.head[0] - 1, self.head[1] + 0),  # west
-                    (self.head[0] + 0, self.head[1] + 1),  # north
-                    (self.head[0] + 0, self.head[1] - 1)]  # south
-            for i in range(4):
-                node = temp[i]
-                if (node not in maze) and self.field.on_field(node):
-                    neighbours.append(directions[i])
-            if len(neighbours) != 0:
-                direction = choice(neighbours)
-            else:
-                direction = choice(directions)
-            return direction
+            return self.__panic_mode(maze)
 
         direction = None
         if node[0] < self.head[0]:
